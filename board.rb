@@ -1,4 +1,11 @@
 require_relative 'piece'
+require_relative 'rook'
+require_relative 'bishop'
+require_relative 'king'
+require_relative 'knight'
+require_relative 'pawn'
+require_relative 'queen'
+require_relative 'null_piece'
 
 class Board
   attr_reader :rows
@@ -37,10 +44,54 @@ class Board
   private
 
   def populate
-    rows.map! do |row|
-      row.map! {|spot| spot = Piece.new}
+    rows.each_with_index do |row, i|
+      row.each_with_index do |spot, j|
+        pos = [i,j]
+        case i
+        when 0
+          case j
+          when 0, 7
+            self[pos] = Rook.new(:black, self, pos)
+          when 1, 6
+            self[pos] = Knight.new(:black, self, pos)
+          when 2,5
+            self[pos] = Bishop.new(:black, self, pos)
+          when 3
+            self[pos] = Queen.new(:black, self, pos)
+          when 4
+            self[pos] = King.new(:black, self, pos)
+          end
+        when 1
+          (0..7).each { |idx| self[[i,idx]] = Pawn.new(:black,self,[i,idx]) }
+        when 7
+          case j
+          when 0, 7
+            self[pos] = Rook.new(:white, self, pos)
+          when 1, 6
+            self[pos] = Knight.new(:white, self, pos)
+          when 2,5
+            self[pos] = Bishop.new(:white, self, pos)
+          when 3
+            self[pos] = Queen.new(:white, self, pos)
+          when 4
+            self[pos] = King.new(:white, self, pos)
+          end
+        when 6
+          (0..7).each { |idx| self[[i,idx]] = Pawn.new(:white,self,[i,idx]) }
+        when 2,3,4,5
+          null = NullPiece.instance
+          (0..7).each { |idx| self[[i,idx]] = null }
+        end
+      end
     end
+  end
 
+  def create_pieces(color)
+    pieces = []
+    [[]].each do |ps|
+      pieces << Pawn.new(color, self, ps)
+    end
+    pieces
   end
 
 
