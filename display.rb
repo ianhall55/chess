@@ -6,13 +6,15 @@ require_relative 'board'
 class Display
   include Cursorable
   attr_reader :cursor, :selected, :board, :debug
+  attr_accessor :message
 
-  def initialize(board = Board.new)
+  def initialize(board)
     @cursor_pos = [0,0]
     @notifications = Hash.new
     @selected = false
     @board = board
     @debug = true
+    @message = 1
   end
 
 
@@ -52,6 +54,8 @@ class Display
    system("clear")
    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
    puts "Debugging" if @debug == true
+   puts "Please select a piece." if @message == 1
+   puts "Please choose a spot to place to your piece." if @message == 2
    build_grid.each { |row| puts row.join }
  end
 
@@ -59,6 +63,3 @@ class Display
 
 
 end
-
-d = Display.new
-d.render

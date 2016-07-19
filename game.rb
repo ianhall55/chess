@@ -1,49 +1,61 @@
+require 'byebug'
 require_relative 'display.rb'
+require_relative 'human_player.rb'
+require_relative 'board'
+require_relative 'piece'
+require_relative 'rook'
+require_relative 'bishop'
+require_relative 'king'
+require_relative 'knight'
+require_relative 'pawn'
+require_relative 'queen'
+require_relative 'null_piece'
+require_relative 'array'
 
 
 class Game
-   attr_reader :display
+   attr_accessor :board, :display, :player_one, :player_two, :turn
 
-  def initialize(display = Display.new)
-    @display = display
-
+  def initialize(player_one, player_two)
+    @board = Board.new
+    @display = Display.new(@board)
+    @player_one = player_one
+    @player_two = player_two
+    player_one.color = :white
+    player_two.color = :black
+    player_one.display = display
+    player_two.display = display
+    @turn = player_one
   end
 
-  def run
+  def play
 
-    move_number = 1
-    piece = nil
-    available_moves = nil
+    while !@board.checkmate?(@turn.color)
+      begin
+        pos1 = turn.play_turn
+        display.message = 2
 
-    while true
-      result = nil
-      until result
-        @display.render
-        result = @display.get_input
+        pos2 = turn.play_turn
+        display.message = 1
+
+        @board.move(pos1,pos2)
+      rescue
+        # display.debug = true
+        retry
       end
-      pos = result
-
-      if move_number == 1
-        piece = display.board[pos]
-        available_moves = piece.moves
-        # p available_moves
-        move_number = 2
-      else
-        # puts "can't move there" unless available_moves.include?(pos)
-        # puts "nice" if available_moves.include?(pos)
-        move_number = 1
-      end
-
+      swap_turn
     end
+
   end
 
-  # def available_moves?(pos)
-  #   piece = display.board[pos]
-  #   available_moves = piece.moves
-  # end
-
+  def swap_turn
+    turn = (turn == player_one) ? player_two : player_one
+  end
 
 end
 
-g = Game.new
-g.run
+# byebug
+player1 = HumanPlayer.new
+player2 = HumanPlayer.new
+g = Game.new(player1, player2)
+g.play

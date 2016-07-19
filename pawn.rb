@@ -1,4 +1,6 @@
+require 'byebug'
 require_relative 'piece'
+require_relative 'board'
 
 class Pawn < Piece
   def initialize(color, board, pos)
@@ -45,7 +47,9 @@ class Pawn < Piece
   end
 
   def side_attacks
-    pos_m = [[pos[0]+1, pos[1] + self.forward_dir],[pos[0]-1, pos[1] + self.forward_dir]]
+    # byebug
+    pos_m = [[pos[0] + self.forward_dir, pos[1] + 1],[pos[0] + self.forward_dir, pos[1] - 1 ]]
+    pos_m = pos_m.select {|move| move[0].between?(0,7) && move[1].between?(0,7)}
     moves = pos_m.select do |move|
       !@board[move].is_a?(NullPiece) && @board[move].color != self.color
     end

@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative 'piece'
 require_relative 'rook'
 require_relative 'bishop'
@@ -9,7 +10,7 @@ require_relative 'null_piece'
 require_relative 'array'
 
 class Board
-  attr_reader :rows
+  attr_accessor :rows
 
   def initialize
     @rows = Array.new(8) {Array.new(8)}
@@ -27,14 +28,44 @@ class Board
   end
 
   def move(start_pos,end_pos)
-    piece = rows[start_pos]
-    raise "Invalid move" unless piece.valid_moves.include?(end_pos)
-    rows[start_pos], rows[end_pos] = NullPiece.instance, rows[start_pos]
+    # byebug
+    piece = self[start_pos]
+    raise "Invalid move" unless piece.valid_moves.include?(end_pos) 
+    self[start_pos], self[end_pos] = NullPiece.instance, self[start_pos]
   end
 
   def in_bounds?(new_pos)
     new_pos.first.between?(0, 7) && new_pos.last.between?(0, 7)
   end
+
+  def in_check?(color)
+    king_pos = nil
+
+    board_dup = @rows.deep_dup.flatten
+
+    board_dup.each do |piece|
+      king_pos = piece.pos if piece.color == color && piece.class == King
+    end
+
+    other_color_pieces = board_dup.select do |piece|
+       piece.color != color && piece.class != NullPiece
+    end
+
+    other_color_pieces.each do |piece|
+      return true if piece.moves.include?(king_pos)
+    end
+
+    false
+  end
+
+  def checkmate?(color)
+    pieces = player_pieces(color)
+    if in_check?(color) && pieces.all? {|piece| piece.valid_moves == [] }
+      return true
+    end
+    false
+  end
+
 
   private
 
@@ -94,38 +125,11 @@ class Board
   # end
 
   def player_pieces(color)
-    board_dup = deep_dup(rows).flatten
+    board_dup = rows.deep_dup.flatten
     board_dup.select do |piece|
       piece.color == color
     end
   end
 
-  def in_check?(color)
-    king_pos = nil
-
-    board_dup = @rows.deep_dup.flatten
-
-    board_dup.each do |piece|
-      king_pos = piece.pos if piece.color == color && piece.class == King
-    end
-
-    other_color_pieces = board_dup.select do |piece|
-       piece.color != color && piece.class != NullPiece
-    end
-
-    other_color_pieces.each do |piece|
-      return true if piece.moves.include?(king_pos)
-    end
-
-    false
-  end
-
-  def checkmate?(color)
-    pieces = player_pieces(color)
-    if in_check?(color) && pieces.all? {|piece| piece.valid_moves == [] }
-      return true
-    end
-    false
-  end
 
 end
