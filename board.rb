@@ -94,8 +94,12 @@ class Board
     pieces
   end
 
+  def in_check?(color)
 
+  end
 
+  def checkmate?(color)
 
+  end
 
 end

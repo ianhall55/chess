@@ -11,7 +11,7 @@ class Pawn < Piece
   end
 
   def moves
-
+    forward_steps + side_attacks  
   end
 
   protected
@@ -44,7 +44,11 @@ class Pawn < Piece
   end
 
   def side_attacks
-
+    pos_m = [[pos[0]+1, pos[1] + self.forward_dir],[pos[0]-1, pos[1] + self.forward_dir]]
+    moves = pos_m.select do |move|
+      !@board[move].is_a?(NullPiece) && @board[move].color != self.color
+    end
+    moves
   end
 
 
