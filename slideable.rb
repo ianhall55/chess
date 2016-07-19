@@ -31,7 +31,8 @@ module Slideable
       if @board.in_bounds?(move)
         if @board[move].is_a?(NullPiece)
           moves << move
-        else @board[move].color != self.color
+        elsif @board[move].color != self.color
+          
           moves << move
           invalid_move = true
         end

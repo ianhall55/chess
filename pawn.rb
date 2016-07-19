@@ -11,10 +11,11 @@ class Pawn < Piece
   end
 
   def moves
-    forward_steps + side_attacks  
+    forward_steps + side_attacks
   end
 
   protected
+
 
   def at_start_row?
     if self.color == :black
