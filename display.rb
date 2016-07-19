@@ -6,7 +6,7 @@ require_relative 'board'
 class Display
   include Cursorable
   attr_reader :cursor, :selected, :board, :debug
-  attr_accessor :message
+  attr_accessor :message, :error, :player
 
   def initialize(board)
     @cursor_pos = [0,0]
@@ -14,7 +14,9 @@ class Display
     @selected = false
     @board = board
     @debug = true
-    @message = 1
+    @message = :first
+    @error = nil
+    @player = nil
   end
 
 
@@ -53,9 +55,11 @@ class Display
  def render
    system("clear")
    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
-   puts "Debugging" if @debug == true
-   puts "Please select a piece." if @message == 1
-   puts "Please choose a spot to place to your piece." if @message == 2
+   ply = @player == :one ? "Player one" : "Player two"
+   puts "#{ply}, please make your move"
+   puts "Please select a piece." if @message == :first
+   puts "Please choose a spot to place to your piece." if @message == :second
+   puts "Wrong color, select your own piece" if @error == :wrong_color
    build_grid.each { |row| puts row.join }
  end
 

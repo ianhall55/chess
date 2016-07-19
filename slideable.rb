@@ -3,6 +3,7 @@ require 'byebug'
 module Slideable
 
   def moves
+    
     possible_moves = []
 
     move_dirs.each do |dir|
@@ -28,17 +29,19 @@ module Slideable
     moves = []
     invalid_move = false
     move = [@pos[0]+dx,@pos[1]+dy]
+
     while invalid_move == false
       if @board.in_bounds?(move)
         if @board[move].is_a?(NullPiece)
-          moves << move
+          moves << move.dup
         else
-          moves << move if @board[move].color != self.color
+          moves << move.dup if @board[move].color != self.color
           invalid_move = true
         end
       else
         invalid_move = true
       end
+
       move[0] += dx
       move[1] += dy
     end

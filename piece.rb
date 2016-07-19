@@ -2,7 +2,8 @@ require_relative 'array'
 
 class Piece
 
-  attr_reader :color, :pos, :board
+  attr_reader :color, :board
+  attr_accessor :pos
 
   def initialize(color, board, pos)
     @color = color
@@ -40,7 +41,7 @@ class Piece
     x2,y2 = to_pos
     # board_dup[x1][y1], board_dup[x2][y2] = NullPiece.instance, board_dup[x1][y1]
     board_dup[original_pos], board_dup[to_pos] = NullPiece.instance, board_dup[original_pos]
-    
+
     @pos = to_pos
     check = board_dup.in_check?(color)
     @pos = original_pos

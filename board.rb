@@ -30,8 +30,9 @@ class Board
   def move(start_pos,end_pos)
     # byebug
     piece = self[start_pos]
-    raise "Invalid move" unless piece.valid_moves.include?(end_pos) 
+    raise "Invalid move" unless piece.valid_moves.include?(end_pos)
     self[start_pos], self[end_pos] = NullPiece.instance, self[start_pos]
+    piece.pos = end_pos
   end
 
   def in_bounds?(new_pos)

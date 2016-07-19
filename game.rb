@@ -29,27 +29,42 @@ class Game
   end
 
   def play
-
-    while !@board.checkmate?(@turn.color)
+    game_over = false
+    while game_over == false
+      display.player = (@turn == player_one) ? :one : :two
       begin
+        if @board.checkmate?(@turn.color)
+          game_over = true
+          next
+        end
+
         pos1 = turn.play_turn
-        display.message = 2
+        display.error = nil
+        # byebug
+        if @board[pos1].color != turn.color
+          display.error = :wrong_color
+          next
+        end
+        display.message = :second
 
         pos2 = turn.play_turn
-        display.message = 1
+        display.message = :first
+
 
         @board.move(pos1,pos2)
       rescue
         # display.debug = true
         retry
       end
+      # byebug
       swap_turn
     end
+    puts "#{@turn.name} loses!"
 
   end
 
   def swap_turn
-    turn = (turn == player_one) ? player_two : player_one
+    @turn = (@turn == player_one) ? player_two : player_one
   end
 
 end

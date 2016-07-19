@@ -36,14 +36,14 @@ class Pawn < Piece
   end
 
   def forward_steps
-    moves = []
-
+    pos_m = []
     if self.at_start_row?
       pos_m = [[pos[0] + self.forward_dir, pos[1]], [pos[0] + (self.forward_dir * 2), pos[1]]]
-      moves = pos_m.select {|move| @board[move].is_a?(NullPiece)}
+    else
+      pos_m = [[pos[0] + self.forward_dir, pos[1]]]
     end
+    pos_m.select {|move| @board[move].is_a?(NullPiece)}
 
-    moves
   end
 
   def side_attacks
