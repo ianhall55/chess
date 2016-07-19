@@ -31,6 +31,7 @@ class Display
  def build_row(row, i)
    row.map.with_index do |piece, j|
      color_options = colors_for(i, j)
+     color_options[:color] = piece.color
      piece.to_s.colorize(color_options)
    end
  end
@@ -43,7 +44,7 @@ class Display
    else
      bg = :blue
    end
-   { background: bg, color: :white }
+   { background: bg}
  end
 
  def render

@@ -11,5 +11,11 @@ class Knight < Piece
     :k
   end
 
+  protected
+  def move_diffs
+    knight_dirs
+  end
+
+
 
 end

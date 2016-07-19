@@ -11,5 +11,9 @@ class King < Piece
     :K
   end
 
+  protected
+  def move_diffs
+    horizonatal_dirs + diagonal_dirs
+  end
 
 end
