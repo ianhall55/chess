@@ -6,6 +6,7 @@ require_relative 'knight'
 require_relative 'pawn'
 require_relative 'queen'
 require_relative 'null_piece'
+require_relative 'array'
 
 class Board
   attr_reader :rows
@@ -26,15 +27,9 @@ class Board
   end
 
   def move(start_pos,end_pos)
-
-    begin
-      piece = rows[start_pos]
-    rescue
-      raise if piece == nil || in_bounds?(end_pos) || end_pos == start_pos #change to nullpiece
-      retry
-    end
-    rows[start_pos], rows[end_pos] = rows[end_pos], rows[start_pos]
-
+    piece = rows[start_pos]
+    raise "Invalid move" unless piece.valid_moves.include?(end_pos)
+    rows[start_pos], rows[end_pos] = NullPiece.instance, rows[start_pos]
   end
 
   def in_bounds?(new_pos)
@@ -94,12 +89,43 @@ class Board
     pieces
   end
 
-  def in_check?(color)
+  # def deep_dup(ary)
+  #   ary.map {|e| e.is_a?(Array) ? deep_dup(e) : e}
+  # end
 
+  def player_pieces(color)
+    board_dup = deep_dup(rows).flatten
+    board_dup.select do |piece|
+      piece.color == color
+    end
+  end
+
+  def in_check?(color)
+    king_pos = nil
+
+    board_dup = @rows.deep_dup.flatten
+
+    board_dup.each do |piece|
+      king_pos = piece.pos if piece.color == color && piece.class == King
+    end
+
+    other_color_pieces = board_dup.select do |piece|
+       piece.color != color && piece.class != NullPiece
+    end
+
+    other_color_pieces.each do |piece|
+      return true if piece.moves.include?(king_pos)
+    end
+
+    false
   end
 
   def checkmate?(color)
-
+    pieces = player_pieces(color)
+    if in_check?(color) && pieces.all? {|piece| piece.valid_moves == [] }
+      return true
+    end
+    false
   end
 
 end

@@ -5,13 +5,14 @@ require_relative 'board'
 
 class Display
   include Cursorable
-  attr_reader :cursor, :selected, :board
+  attr_reader :cursor, :selected, :board, :debug
 
   def initialize(board = Board.new)
     @cursor_pos = [0,0]
     @notifications = Hash.new
     @selected = false
     @board = board
+    @debug = true
   end
 
 
@@ -50,6 +51,7 @@ class Display
  def render
    system("clear")
    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
+   puts "Debugging" if @debug == true
    build_grid.each { |row| puts row.join }
  end
 

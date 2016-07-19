@@ -26,11 +26,11 @@ class Game
       if move_number == 1
         piece = display.board[pos]
         available_moves = piece.moves
-        p available_moves
+        # p available_moves
         move_number = 2
       else
-        puts "can't move there" unless available_moves.include?(pos)
-        puts "nice" if available_moves.include?(pos)
+        # puts "can't move there" unless available_moves.include?(pos)
+        # puts "nice" if available_moves.include?(pos)
         move_number = 1
       end
 

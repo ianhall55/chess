@@ -37,7 +37,7 @@ class Pawn < Piece
     moves = []
 
     if self.at_start_row?
-      pos_m = [[pos[0], pos[1] + self.forward_dir], [pos[0], pos[1] + (self.forward_dir * 2)]]
+      pos_m = [[pos[0] + self.forward_dir, pos[1]], [pos[0] + (self.forward_dir * 2), pos[1]]]
       moves = pos_m.select {|move| @board[move].is_a?(NullPiece)}
     end
 

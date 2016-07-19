@@ -13,7 +13,7 @@ class King < Piece
 
   protected
   def move_diffs
-    horizonatal_dirs + diagonal_dirs
+    horizontal_dirs + diagonal_dirs
   end
 
 end

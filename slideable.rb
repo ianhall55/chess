@@ -1,4 +1,4 @@
-
+require 'byebug'
 
 module Slideable
 
@@ -24,6 +24,7 @@ module Slideable
   end
 
   def grow_unblocked_moves_in_dir(dx,dy)
+    # byebug
     moves = []
     invalid_move = false
     move = [@pos[0]+dx,@pos[1]+dy]
@@ -31,9 +32,8 @@ module Slideable
       if @board.in_bounds?(move)
         if @board[move].is_a?(NullPiece)
           moves << move
-        elsif @board[move].color != self.color
-          
-          moves << move
+        else
+          moves << move if @board[move].color != self.color
           invalid_move = true
         end
       else
