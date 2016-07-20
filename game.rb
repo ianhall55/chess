@@ -14,7 +14,8 @@ require_relative 'array'
 
 
 class Game
-   attr_accessor :board, :display, :player_one, :player_two, :turn
+   attr_accessor :board, :display, :player_one, :player_two
+   attr_reader :turn
 
   def initialize(player_one, player_two)
     @board = Board.new
@@ -64,8 +65,9 @@ class Game
   end
 
   def swap_turn
-    @turn = (@turn == player_one) ? player_two : player_one
+    @turn = (turn == player_one) ? player_two : player_one
   end
+
 
 end
 

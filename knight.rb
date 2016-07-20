@@ -8,7 +8,7 @@ class Knight < Piece
   end
 
   def symbol
-    :k
+    '♞'.colorize(color)
   end
 
   protected

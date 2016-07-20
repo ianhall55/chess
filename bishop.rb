@@ -8,7 +8,7 @@ class Bishop < Piece
   end
 
   def symbol
-    :B
+    '♝'.colorize(color)
   end
 
   protected

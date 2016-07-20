@@ -9,7 +9,7 @@ class Pawn < Piece
 
 
   def symbol
-    :p
+    '♟'.colorize(color)
   end
 
   def moves

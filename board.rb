@@ -30,6 +30,8 @@ class Board
   def move(start_pos,end_pos)
     # byebug
     piece = self[start_pos]
+    # p piece.moves
+    # p piece.valid_moves
     raise "Invalid move" unless piece.valid_moves.include?(end_pos)
     self[start_pos], self[end_pos] = NullPiece.instance, self[start_pos]
     piece.pos = end_pos
@@ -40,15 +42,15 @@ class Board
   end
 
   def in_check?(color)
+
     king_pos = nil
 
-    board_dup = @rows.deep_dup.flatten
-
-    board_dup.each do |piece|
+    flat_rows = @rows.flatten
+    flat_rows.each do |piece|
       king_pos = piece.pos if piece.color == color && piece.class == King
     end
 
-    other_color_pieces = board_dup.select do |piece|
+    other_color_pieces = flat_rows.select do |piece|
        piece.color != color && piece.class != NullPiece
     end
 
@@ -67,6 +69,29 @@ class Board
     false
   end
 
+  def dup_board
+    
+    board_dup = Board.new
+    rows_dup = @rows.deep_dup
+    board_dup.rows = rows_dup
+
+    self.rows.each_with_index do |row,i|
+      row.each_with_index do |piece,j|
+        if piece.class != NullPiece
+          the_class = piece.class
+          the_color = piece.color
+          the_pos = piece.pos
+          duped_piece = the_class.new(the_color,board_dup,the_pos)
+          board_dup[the_pos] = duped_piece
+        else
+          board_dup[[i,j]] = NullPiece.instance
+        end
+      end
+    end
+
+    board_dup
+
+  end
 
   private
 

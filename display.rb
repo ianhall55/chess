@@ -22,7 +22,7 @@ class Display
 
 
   def move(new_pos)
-    # byebug
+    
     @cursor_pos = new_pos
 
   end

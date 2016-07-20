@@ -9,7 +9,7 @@ class Rook < Piece
 
 
   def symbol
-    :R
+    '♜'.colorize(color)
   end
 
 

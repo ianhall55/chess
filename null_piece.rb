@@ -16,6 +16,10 @@ class NullPiece
     "   "
   end
 
+  def pos
+
+  end
+  
   def empty?
     true
   end

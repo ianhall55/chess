@@ -9,7 +9,7 @@ class Queen < Piece
 
 
   def symbol
-    :Q
+    '♛'.colorize(color)
   end
 
 
