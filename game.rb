@@ -60,6 +60,8 @@ class Game
       # byebug
       swap_turn
     end
+
+    @display.render
     puts "#{@turn.name} loses!"
 
   end

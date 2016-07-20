@@ -24,7 +24,7 @@ class Piece
 
     valid = []
     valid = moves.reject do |move|
-      
+
       move_into_check?(move)
     end
     valid
@@ -36,19 +36,20 @@ class Piece
 
   private
   def move_into_check?(to_pos)
-
+    # byebug
     original_pos = @pos
     board_dup = @board.dup_board
 
     x1,y1 = original_pos
     x2,y2 = to_pos
 
+    board_dup[original_pos].pos = to_pos
     board_dup[original_pos], board_dup[to_pos] = NullPiece.instance, board_dup[original_pos]
 
-    @pos = to_pos
+    # @pos = to_pos
     check = board_dup.in_check?(@color)
 
-    @pos = original_pos
+    # @pos = original_pos
     check
   end
 
